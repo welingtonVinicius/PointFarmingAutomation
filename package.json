@@ -1,0 +1,16 @@
+{
+  "name": "point_farming_automation",
+  "version": "1.0.0",
+  "description": "Point Farming Automation frontend",
+  "main": "main.js",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "dependencies": {
+    "axios": "^0.21.1"
+  },
+  "devDependencies": {
+    "parcel": "^2.0.0"
+  }
+}
