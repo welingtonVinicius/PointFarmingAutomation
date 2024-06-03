@@ -1,1 +1,1 @@
-# PointFarmingAutomation
+The PointFarmingAutomation project is designed to streamline and automate the farming operations by providing a robust backend server. Built with Flask, this server features dedicated endpoints for establishing site connections, managing farming tasks, and delivering real-time progress updates. The backend logic efficiently handles requests and database interactions, ensuring a smooth and responsive experience for managing agricultural operations.
