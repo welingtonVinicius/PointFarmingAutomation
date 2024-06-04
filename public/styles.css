@@ -5,10 +5,12 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
     line-height: 1.6;
     background-color: #f4f4f4;
     color: #333;
+    /* Added a transition effect for smoother color transitions */
+    transition: background-color 0.3s ease-in-out;
 }
 
 header {
@@ -17,10 +19,15 @@ header {
     padding-top: 2rem;
     padding-bottom: 2rem;
     text-align: center;
+    /* Increased border radius for a smoother appearance */
+    border-bottom: 5px solid #444;
 }
 
 .container {
     padding: 20px;
+    /* Added a max-width for better layout control on large screens */
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .row {
@@ -31,6 +38,8 @@ header {
 .col {
     flex: 1;
     padding: 0 15px;
+    /* Minimum width to prevent columns from being too narrow */
+    min-width: 150px;
 }
 
 .site-connections {
@@ -47,6 +56,12 @@ header {
     margin-bottom: 20px;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0,0,0,.1);
+    /* Added hover effect for visual feedback */
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.connection-item:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,.2);
 }
 
 .connection-item h3 {
@@ -63,6 +78,12 @@ header {
     margin-bottom: 20px;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0,0,0,.1);
+    /* Consistent with connection-item for hover effect */
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.setting-item:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,.2);
 }
 
 .setting-item label {
@@ -77,6 +98,13 @@ header {
     margin-bottom: 10px;
     border-radius: 5px;
     border: 1px solid #ddd;
+    /* Added to improve focus visibility */
+    outline: none;
+}
+
+.setting-item input[type="text"]:focus,
+.setting-item select:focus {
+    box-shadow: 0 0 0 2px #0056b3;
 }
 
 .btn {
@@ -88,10 +116,13 @@ header {
     border-radius: 5px;
     cursor: pointer;
     text-decoration: none;
+    /* Added transition for smoother hover effect */
+    transition: background-color 0.3s ease-in-out;
 }
 
 .btn:hover {
-    opacity: 0.9;
+    background-color: #555;
+    opacity: 1; /* Made hover state more noticeable */
 }
 
 @media (max-width: 768px) {
@@ -101,5 +132,15 @@ header {
     
     .col {
         margin-bottom: 20px;
+    }
+
+    /* Added for better spacing and layout on small screens */
+    .container {
+        padding: 10px;
+    }
+
+    header {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
     }
 }
