@@ -16,50 +16,51 @@ PASSWORD = os.getenv("POINT_FARM_PASSWORD")
 if not USERNAME or not PASSWORD:
     raise ValueError("USERNAME or PASSWORD is not set in the environment variables.")
 
-class PointFarmingAutomation:
+class PointCollectorAutomation:
     def __init__(self):
-        self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
-        self.wait = WebDriverWait(self.driver, 10)
-        self.BASE_URL = "https://example.com"
+        self.browserDriver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+        self.waitDriver = WebDriverWait(self.browserDriver, 10)
+        self.siteBaseUrl = "https://example.com"
 
-    def login(self):
+    def signIn(self):
         try:
-            self.driver.get(f"{self.BASE_URL}/login")
-            username_input = self.wait.until(EC.presence_of_element_located((By.NAME, "username")))
-            username_input.send_keys(USERNAME)
-            password_input = self.wait.until(EC.presence_of_element_located((By.NAME, "password")))
-            password_input.send_keys(PASSWORD)
-            login_button = self.wait.until(EC.element_to_be_clickable((By.XPATH, "//button[@type='submit']")))
-            login_button.click()
+            self.browserDriver.get(f"{self.siteBaseUrl}/login")
+            usernameField = self.waitDriver.until(EC.presence_of_element_located((By.NAME, "username")))
+            usernameField.send_keys(USERNAME)
+            passwordField = self.waitDriver.until(EC.presence_of_element_located((By.NAME, "password")))
+            passwordField.send_keys(PASSWORD)
+            signInButton = self.waitDriver.until(EC.element_to_be_clickable((By.XPATH, "//button[@type='submit']")))
+            signInButton.click()
             
-            self.wait.until(EC.url_changes(f"{self.BASE_URL}/login"))
+            self.waitDriver.until(EC.url_changes(f"{self.siteBaseUrl}/login"))
             print("Logged in successfully.")
         except Exception as e:
-            print("Error during login:", e)
+            print("Login failed:", e)
 
-    def perform_farming_tasks(self):
-        self.driver.get(f"{self.BASE_URL}/tasks")
+    def executeTasks(self):
+        self.browserDriver.get(f"{self.siteBaseUrl}/tasks")
         try:
-            print("Completing tasks...")
-            print("Tasks completed.")
+            print("Starting task execution...")
+            # Implementation for executing tasks goes here
+            
+            print("All tasks executed successfully.")
         except Exception as e:
-            print("Error while performing tasks:", e)
+            print("Failed to execute tasks:", e)
 
-    def retrieve_point_data(self):
+    def fetchCurrentPoints(self):
         try:
-            self.driver.get(f"{self.BASE_URL}/dashboard")
-            points_element = self.wait.until(EC.presence_of_element_located((By.ID, "points")))
-            points = points_element.text
-            print(f"Current points: {points}")
+            self.browserDriver.get(f"{self.siteBaseUrl}/dashboard")
+            pointsDisplay = self.waitDriver.until(EC.presence_of_element_located((By.ID, "points")))
+            currentPoints = pointsDisplay.text
+            print(f"Current points balance: {currentPoints}")
         except Exception as e:
-            print("Error while retrieving points data:", e)
+            print("Failed to fetch points:", e)
 
-    def close_browser(self):
-        self.driver.quit()
+    def terminateBrowserSession(self):
+        self.browserDriver.quit()
 
 if __name__ == "__main__":
-    bot = PointFarmingAutomation()
-    bot.login()
-    bot.perform_farming_tasks()
-    bot.retrieve_point_data()
-    bot.close_before()
+    pointCollector = PointCollector”.signIn()
+    pointCollector.executeTasks()
+    pointCollector.fetchCurrentPoints()
+    pointCollector.terminateBrowserSession()
