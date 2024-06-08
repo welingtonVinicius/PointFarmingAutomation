@@ -1,10 +1,14 @@
 import os
-from dotenv import load_dotenv
 import time
 import random
+import asyncio
+import logging
+from dotenv import load_dotenv
 from sites_module import SiteA, SiteB
 
 load_dotenv()
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s: %(levelname)s: %(message)s')
 
 class PointFarmingAutomation:
     def __init__(self):
@@ -12,44 +16,45 @@ class PointFarmingAutomation:
         self.progress = 0
         self.sites = [SiteA(api_key=os.getenv('SITE_A_API_KEY')), SiteB(api_key=os.getenv('SITE_B_API_KEY'))]
 
-    def start_farming(self):
+    async def start_farming(self):
         if self.is_farming:
-            print("Farming is already in progress.")
+            logging.info("Farming is already in progress.")
             return
         self.is_farming = True
-        print("Starting point farming...")
-        for site in self.sites:
-            site.start_farming()
-        self.monitor_farming()
+        logging.info("Starting point farming asynchronously...")
+        await asyncio.gather(*(site.start_farming() for site in self.sites))
+        await self.monitor_farming()
 
-    def stop_farming(self):
+    async def stop_farming(self):
         if not self.is_farming:
-            print("Farming is not in progress.")
+            logging.info("Farming is not in progress.")
             return
-        print("Stopping point farming...")
-        for site in self.sites:
-            site.stop_farming()
+        logging.info("Stopping point farming...")
+        await asyncio.gather(*(site.stop_farming() for site in self.sites))
         self.is_farming = False
         self.progress = 0
 
-    def monitor_farming(self):
+    async def monitor_farming(self):
         try:
             while self.is_farming:
-                time.sleep(10)
-                self.progress = sum(site.get_points() for site in self.sites)
-                print(f"Current farming progress: {self.progress} points")
+                await asyncio.sleep(10)  # Use asyncio.sleep() for asynchronous sleep
+                self.progress = sum(await site.get_points() for site in self.sites)
+                logging.info(f"Current farming progress: {self.progress} points")
         except KeyboardInterrupt:
-            print("Farming interrupted by user.")
-            self.stop_farming()
+            logging.info("Farming interrupted by user.")
+            await self.stop_farming()
 
     def get_progress(self):
         return self.progress
 
-if __name__ == '__main__':
+async def main():
     farming_automation = PointFarmingAutomation()
     try:
-        farming_automation.start_farming()
+        await farming_automation.start_farming()
     except Exception as e:
-        print(f"An error occurred: {e}")
+        logging.error(f"An error occurred: {e}")
     finally:
-        farming_automation.stop_farming()
+        await farming_automation.stop_farming()
+
+if __name__ == '__main__':
+    asyncio.run(main())
