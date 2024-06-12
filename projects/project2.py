@@ -2,46 +2,55 @@ import os
 import requests
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv()  # Load environment variables
 
-LOGIN_URL = 'https://example.com/login'
-FARMING_TASK_URL = 'https://example.com/farm'
-POINT_URL = 'https://example.com/points'
-USERNAME = os.getenv('SITE2_USERNAME')
-PASSWORD = os.getenv('SITE2_PASSWORD')
+# Endpoint URLs
+LOGIN_ENDPOINT = 'https://example.com/login'
+TASK_FARMING_ENDPOINT = 'https://example.com/farm'
+POINTS_RETRIEVAL_ENDPOINT = 'https://example.com/points'
 
-session = requests.Session()
+# Credentials
+USER_NAME = os.getenv('SITE2_USERNAME')
+USER_PASSWORD = os.getenv('SITE2_PASSWORD')
 
-def login():
-    payload = {
-        'username': USERNAME,
-        'password': PASSWORD,
+# Initiating the session
+web_session = requests.Session()
+
+
+def log_into_website():
+    credentials = {
+        'username': USER_NAME,
+        'password': USER_PASSWORD,
     }
-    response = session.post(LOGIN_URL, data=payload)
+    response = web_session.post(LOGIN_ENDPOINT, data=credentials)
     if response.status_code == 200:
         print("Logged in successfully.")
     else:
         print("Failed to log in.")
 
-def perform_farming_tasks():
-    response = session.get(FARMING_TASK_URL)
+
+def execute_farming_activities():
+    response = web_session.get(TASK_FARMING_ENDPOINT)
     if response.status_code == 200:
         print("Farming tasks completed successfully.")
     else:
         print("Failed to complete farming tasks.")
 
-def retrieve_point_data():
-    response = session.get(POINT_URL)
-    if response.status_id == 200:
+
+def fetch_points_information():
+    response = web_session.get(POINTS_RETRIEVAL_ENDPOINT)
+    if response.status_code == 200:  # This was corrected from 'status_id' to 'status_code'
         points = response.json().get('points')
         print(f"Current points: {points}")
     else:
         print("Failed to retrieve point data.")
 
+
 def main():
-    login()
-    perform_farming_tasks()
-    retrieve_point_data()
+    log_into_website()
+    execute_farming_activities()
+    fetch_points_information()
+
 
 if __name__ == "__main__":
     main()
