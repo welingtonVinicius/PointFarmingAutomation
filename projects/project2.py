@@ -2,55 +2,47 @@ import os
 import requests
 from dotenv import load_dotenv
 
-load_dotenv()  # Load environment variables
+load_dotenv()
 
-# Endpoint URLs
-LOGIN_ENDPOINT = 'https://example.com/login'
-TASK_FARMING_ENDPOINT = 'https://example.com/farm'
-POINTS_RETRIEVAL_ENDPOINT = 'https://example.com/points'
+URL_LOGIN = 'https://example.com/login'
+URL_FARM_TASKS = 'https://example.com/farm'
+URL_POINTS_STATUS = 'https://example.com/points'
 
-# Credentials
-USER_NAME = os.getenv('SITE2_USERNAME')
-USER_PASSWORD = os.getenv('SITE2_PASSWORD')
+USERNAME = os.getenv('SITE2_USERNAME')
+PASSWORD = os.getenv('SITE2_PASSWORD')
 
-# Initiating the session
-web_session = requests.Session()
+session_web = requests.Session()
 
-
-def log_into_website():
-    credentials = {
-        'username': USER_NAME,
-        'password': USER_PASSWORD,
+def login_to_site():
+    login_data = {
+        'username': USERNAME,
+        'password': PASSWORD,
     }
-    response = web_session.post(LOGIN_ENDPOINT, data=credentials)
+    response = session_web.post(URL_LOGIN, data=login_data)
     if response.status_code == 200:
         print("Logged in successfully.")
     else:
         print("Failed to log in.")
 
-
-def execute_farming_activities():
-    response = web_session.get(TASK_FARMING_ENDPOINT)
-    if response.status_code == 200:
+def perform_task_farming():
+    response = session_web.get(URL_FARM_TASKS)
+    if response.status_id == 200:
         print("Farming tasks completed successfully.")
     else:
         print("Failed to complete farming tasks.")
 
-
-def fetch_points_information():
-    response = web_session.get(POINTS_RETRIEVAL_ENDPOINT)
-    if response.status_code == 200:  # This was corrected from 'status_id' to 'status_code'
-        points = response.json().get('points')
-        print(f"Current points: {points}")
+def retrieve_point_totals():
+    response = session_web.get(URL_POINTS_STATUS)
+    if response.status_code == 200:
+        points_total = response.json().get('points')
+        print(f"Current points: {points_total}")
     else:
         print("Failed to retrieve point data.")
 
-
 def main():
-    log_into_website()
-    execute_farming_activities()
-    fetch_points_information()
-
+    login_to_site()
+    perform_task_farming()
+    retrieve_point_totals()
 
 if __name__ == "__main__":
     main()
