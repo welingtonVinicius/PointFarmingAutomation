@@ -3,18 +3,18 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const backendURL = process.env.BACKEND_URL || 'http://localhost:3000';
+const backendApiUrl = process.env.BACKEND_URL || 'http://localhost:3000';
 
-document.getElementById('loginForm').addEventListener('submit', handleLogin);
-document.getElementById('settingsForm').addEventListener('submit', handleSettings);
+document.getElementById('loginForm').addEventListener('submit', submitLoginForm);
+document.getElementById('settingsForm').addEventListener('submit', submitSettingsForm);
 
-async function handleLogin(event) {
+async function submitLoginForm(event) {
     event.preventDefault();
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+    const userEmail = document.getElementById('email').value;
+    const userPassword = document.getElementById('password').value;
 
     try {
-        const response = await axios.post(`${backendURL}/login`, { email, password });
+        const { data: loginResponse } = await axios.post(`${backendApiUrl}/login`, { email: userEmail, password: userPassword });
         alert('Login Successful');
     } catch (error) {
         console.error('Login failed:', error);
@@ -22,15 +22,15 @@ async function handleLogin(event) {
     }
 }
 
-async function handleSettings(event) {
+async function submitSettingsForm(event) {
     event.preventDefault();
-    const siteCredentials = {
+    const siteConfiguration = {
         siteName: document.getElementById('siteName').value,
         apiKey: document.getElementById('apiKey').value,
     };
 
     try {
-        const response = await axios.post(`${backendURL}/settings`, siteCredentials);
+        const { data: settingsResponse } = await axios.post(`${backendApiUrl}/settings`, siteConfiguration);
         alert('Settings Updated');
     } catch (error) {
         console.error('Failed to update settings:', error);
@@ -38,10 +38,9 @@ async function handleSettings(event) {
     }
 }
 
-async function fetchFarmingProgress() {
+async function retrieveFarmingProgress() {
     try {
-        const response = await axios.get(`${backendURL}/farmingProgress`);
-        const progressData = response.data;
+        const { data: progressData } = await axios.get(`${backendApiUrl}/farmingProgress`);
         document.getElementById('progressDisplay').innerHTML = JSON.stringify(progressData, null, 2);
     } catch (error) {
         console.error('Failed to fetch farming progress:', error);
@@ -49,4 +48,4 @@ async function fetchFarmingProgress() {
     }
 }
 
-fetchFarmingProgress();
+retrieveFarmingProgress();
